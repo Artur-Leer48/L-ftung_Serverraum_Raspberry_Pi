@@ -1,16 +1,23 @@
-# This is a sample Python script.
+from time import sleep
 
-# Press Strg+F5 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+PFAD = "/sys/bus/iio/devices/iio:device0/"
 
+while True:
+    with open(PFAD + "in_temp_input", "r") as datei:
+        temperatur_raw = int(datei.read())
+    with open(PFAD + "in_humidityrelative_input", "r") as datei:
+        luftfeuchte_raw = int(datei.read())
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press F9 to toggle the breakpoint.
+    with open(PFAD + "in_pressure_input", "r") as datei:
+        luftdruck_raw = int(datei.read())
 
+    temperatur = temperatur_raw / 1000
+    luftfeuchte = luftfeuchte_raw / 1000
+    luftdruck = luftdruck_raw / 1000
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    print("--------------------------------")
+    print(f"Temperatur: {temperatur:.2f} °C")
+    print(f"Luftfeuchte: {int(luftfeuchte)} %")
+    print(f"Luftdruck: {int(luftdruck)} hPa")
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    time.sleep(10)
