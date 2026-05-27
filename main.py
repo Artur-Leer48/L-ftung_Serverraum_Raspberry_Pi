@@ -1,24 +1,22 @@
 from time import sleep
+import smbus2
+import bme280
 from gpiozero import OutputDevice
 
-PFAD = "/sys/bus/iio/devices/iio:device0/"
+I2C_PORT = 1
+I2C_ADDRESS = 0x77
 LUEFTER_PIN = 17
 TEMP_SCHWELLE = 25.0
 
+bus = smbus2.SMBus(I2C_PORT)
+kalibrierung = bme280.load_calibration_params(bus, I2C_ADDRESS)
 luefter = OutputDevice(LUEFTER_PIN, active_high=True, initial_value=False)
 
 while True:
-    with open(PFAD + "in_temp_input", "r") as datei:
-        temperatur_raw = float(datei.read())
-    with open(PFAD + "in_humidityrelative_input", "r") as datei:
-        luftfeuchte_raw = float(datei.read())
-
-    with open(PFAD + "in_pressure_input", "r") as datei:
-        luftdruck_raw = float(datei.read())
-
-    temperatur = temperatur_raw / 1000
-    luftfeuchte = luftfeuchte_raw / 1000
-    luftdruck = luftdruck_raw / 1000
+    daten = bme280.sample(bus, I2C_ADDRESS, kalibrierung)
+    temperatur = daten.temperature
+    luftfeuchte = daten.humidity
+    luftdruck = daten.pressure
 
     if temperatur >= TEMP_SCHWELLE:
         luefter.on()
@@ -31,4 +29,4 @@ while True:
     print(f"Luftdruck: {int(luftdruck)} hPa")
     print(f"Lüfter: {'AN' if luefter.value else 'AUS'}")
 
-    sleep(3)
+    sleep(2)
