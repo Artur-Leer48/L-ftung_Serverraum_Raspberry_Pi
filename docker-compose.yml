@@ -1,0 +1,7 @@
+services:
+  lueftung-serverraum:
+    build: .
+    image: lueftung-serverraum:latest
+    container_name: lueftung-serverraum
+    restart: unless-stopped
+    privileged: true
