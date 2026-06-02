@@ -4,6 +4,6 @@ WORKDIR /app
 
 RUN pip install --no-cache-dir gpiozero pigpio smbus2 RPi.bme280
 
-COPY main.py .
+COPY . .
 
 CMD ["python3", "-u", "main.py"]
