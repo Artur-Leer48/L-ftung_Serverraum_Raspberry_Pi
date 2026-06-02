@@ -6,12 +6,14 @@ from gpiozero import OutputDevice
 
 from calculations import calculate_dew_point, celsius_to_fahrenheit
 from config import (
+    CSV_DATEI,
     I2C_ADDRESS,
     I2C_PORT,
     LUEFTER_PIN,
     MESSINTERVALL_SEKUNDEN,
     TEMP_SCHWELLE,
 )
+from csv_logger import write_measurement
 
 bus = smbus2.SMBus(I2C_PORT)
 kalibrierung = bme280.load_calibration_params(bus, I2C_ADDRESS)
@@ -37,5 +39,15 @@ while True:
     print(f"Luftfeuchte: {int(luftfeuchte)} %")
     print(f"Luftdruck: {int(luftdruck)} hPa")
     print(f"Lüfter: {'AN' if luefter.value else 'AUS'}")
+
+    write_measurement(
+        CSV_DATEI,
+        temperatur,
+        temperatur_fahrenheit,
+        taupunkt,
+        luftfeuchte,
+        luftdruck,
+        luefter.value,
+    )
 
     sleep(MESSINTERVALL_SEKUNDEN)
