@@ -3,7 +3,6 @@
 ## Voraussetzungen
 
 - Docker Desktop installiert
-- Git (optional)
 
 ---
 
@@ -40,6 +39,17 @@ Der Lüfter schaltet bei 25 °C ein und bei 22 °C aus (Hysterese).
 ```
 docker compose -f docker-compose.yml -f docker-compose.mock.yml up
 ```
+
+**Nach Änderungen an HTML/CSS/JS neu bauen:**
+
+Wenn Änderungen an `templates/` oder `static/` nicht im Browser sichtbar sind, muss der Container neu gebaut werden:
+
+```
+docker compose -f docker-compose.yml -f docker-compose.mock.yml build
+docker compose -f docker-compose.yml -f docker-compose.mock.yml up
+```
+
+Danach im Browser **Strg+Shift+R** drücken, damit auch der Browser-Cache geleert wird.
 
 **Stoppen:**
 
