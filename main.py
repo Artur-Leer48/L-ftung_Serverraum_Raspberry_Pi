@@ -23,19 +23,23 @@ def run_measurement_loop():
     if LUEFTER_MODUS == "real":
         luefter = OutputDevice(LUEFTER_PIN, active_high=True, initial_value=False)
 
+    luefter_war_aktiv = False
+
     while True:
         temperatur, luftfeuchte, luftdruck = sensor.read()
         temperatur_fahrenheit = celsius_to_fahrenheit(temperatur)
         taupunkt = calculate_dew_point(temperatur, luftfeuchte)
 
-        if temperatur >= get_temp_schwelle():
+        temp_schwelle = get_temp_schwelle()
+        if temperatur >= temp_schwelle:
             luefter_aktiv = True
-            if luefter is not None:
-                luefter.on()
-        else:
+        elif temperatur < temp_schwelle - 3.0:
             luefter_aktiv = False
-            if luefter is not None:
-                luefter.off()
+        else:
+            luefter_aktiv = luefter_war_aktiv  # Hysterese: Zustand beibehalten
+
+        if luefter is not None:
+            luefter.on() if luefter_aktiv else luefter.off()
 
         print("--------------------------------")
         print(f"Temperatur: {temperatur:.2f} °C")
@@ -64,6 +68,7 @@ def run_measurement_loop():
             luefter_aktiv,
         )
 
+        luefter_war_aktiv = luefter_aktiv
         sleep(MESSINTERVALL_SEKUNDEN)
 
 
