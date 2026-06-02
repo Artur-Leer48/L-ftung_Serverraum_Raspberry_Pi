@@ -23,10 +23,13 @@ class Bme280Sensor:
 
 class MockSensor:
     def read(self):
-        sekunden = time()
-        temperatur = 24.5 + sin(sekunden / 12) * 3
-        luftfeuchte = 48 + sin(sekunden / 16) * 8
-        luftdruck = 1013 + sin(sekunden / 20) * 5
+        t = time()
+        # Temperatur: 20–32 °C, Periode ~20 s → jede Sekunde ~0.5–2 °C Änderung sichtbar
+        temperatur  = 26.0 + sin(t / 3) * 6
+        # Luftfeuchte: 35–65 %, Periode ~25 s
+        luftfeuchte = 50.0 + sin(t / 4) * 15
+        # Luftdruck: 1008–1018 hPa
+        luftdruck   = 1013.0 + sin(t / 8) * 5
 
         return temperatur, luftfeuchte, luftdruck
 
