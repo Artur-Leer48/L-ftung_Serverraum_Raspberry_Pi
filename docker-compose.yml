@@ -5,5 +5,7 @@ services:
     container_name: lueftung-serverraum
     restart: unless-stopped
     privileged: true
+    ports:
+      - "8000:8000"
     volumes:
       - ./messwerte.csv:/app/messwerte.csv
