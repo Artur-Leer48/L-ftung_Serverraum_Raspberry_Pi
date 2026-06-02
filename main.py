@@ -1,40 +1,41 @@
 from threading import Thread
 from time import sleep
 
-import bme280
-import smbus2
 from gpiozero import OutputDevice
 
 from app_state import get_temp_schwelle, update_measurement
 from calculations import calculate_dew_point, celsius_to_fahrenheit
 from config import (
     CSV_DATEI,
-    I2C_ADDRESS,
-    I2C_PORT,
+    LUEFTER_MODUS,
     LUEFTER_PIN,
     MESSINTERVALL_SEKUNDEN,
 )
 from csv_logger import write_measurement
+from sensor import create_sensor
 from webserver import run_webserver
 
 
 def run_measurement_loop():
-    bus = smbus2.SMBus(I2C_PORT)
-    kalibrierung = bme280.load_calibration_params(bus, I2C_ADDRESS)
-    luefter = OutputDevice(LUEFTER_PIN, active_high=True, initial_value=False)
+    sensor = create_sensor()
+    luefter = None
+
+    if LUEFTER_MODUS == "real":
+        luefter = OutputDevice(LUEFTER_PIN, active_high=True, initial_value=False)
 
     while True:
-        daten = bme280.sample(bus, I2C_ADDRESS, kalibrierung)
-        temperatur = daten.temperature
-        luftfeuchte = daten.humidity
-        luftdruck = daten.pressure
+        temperatur, luftfeuchte, luftdruck = sensor.read()
         temperatur_fahrenheit = celsius_to_fahrenheit(temperatur)
         taupunkt = calculate_dew_point(temperatur, luftfeuchte)
 
         if temperatur >= get_temp_schwelle():
-            luefter.on()
+            luefter_aktiv = True
+            if luefter is not None:
+                luefter.on()
         else:
-            luefter.off()
+            luefter_aktiv = False
+            if luefter is not None:
+                luefter.off()
 
         print("--------------------------------")
         print(f"Temperatur: {temperatur:.2f} °C")
@@ -42,7 +43,7 @@ def run_measurement_loop():
         print(f"Taupunkt: {taupunkt:.2f} °C")
         print(f"Luftfeuchte: {int(luftfeuchte)} %")
         print(f"Luftdruck: {int(luftdruck)} hPa")
-        print(f"Lüfter: {'AN' if luefter.value else 'AUS'}")
+        print(f"Lüfter: {'AN' if luefter_aktiv else 'AUS'}")
 
         update_measurement(
             temperatur,
@@ -50,7 +51,7 @@ def run_measurement_loop():
             taupunkt,
             luftfeuchte,
             luftdruck,
-            luefter.value,
+            luefter_aktiv,
         )
 
         write_measurement(
@@ -60,7 +61,7 @@ def run_measurement_loop():
             taupunkt,
             luftfeuchte,
             luftdruck,
-            luefter.value,
+            luefter_aktiv,
         )
 
         sleep(MESSINTERVALL_SEKUNDEN)

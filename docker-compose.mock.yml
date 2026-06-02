@@ -1,0 +1,5 @@
+services:
+  lueftung-serverraum:
+    environment:
+      SENSOR_MODUS: mock
+      LUEFTER_MODUS: mock
