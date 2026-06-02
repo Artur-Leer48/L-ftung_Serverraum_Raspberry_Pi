@@ -329,6 +329,8 @@ function applyStatus(d) {
     els.thresholdInput.value  = t != null ? t.toFixed(1) : '';
     els.thresholdSlider.value = t != null ? t : 25;
     updateSliderFill(t ?? 25);
+    committedValue = t ?? committedValue;
+    updateSaveBtn();
   }
 
   // Sparklines
@@ -362,10 +364,18 @@ function updateSliderFill(val) {
     `linear-gradient(to right, #3E6AE1 ${pct}%, #E5E7EB ${pct}%)`;
 }
 
+let committedValue = parseFloat(els.thresholdSlider.value) || 25;
+
+function updateSaveBtn() {
+  const v = parseFloat(els.thresholdInput.value);
+  els.saveBtn.disabled = isNaN(v) || v === committedValue;
+}
+
 els.thresholdSlider.addEventListener('input', () => {
   const v = parseFloat(els.thresholdSlider.value);
   els.thresholdInput.value = v.toFixed(1);
   updateSliderFill(v);
+  updateSaveBtn();
 });
 
 els.thresholdInput.addEventListener('input', () => {
@@ -374,6 +384,7 @@ els.thresholdInput.addEventListener('input', () => {
     els.thresholdSlider.value = v;
     updateSliderFill(v);
   }
+  updateSaveBtn();
 });
 
 // ── Save ──────────────────────────────────────────────────────
@@ -387,9 +398,13 @@ els.saveBtn.addEventListener('click', async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ switch_on_temperature: val }),
     });
-    if (res.ok) { applyStatus(await res.json()); showFeedback('Gespeichert ✓'); }
+    if (res.ok) {
+      committedValue = val;
+      applyStatus(await res.json());
+      showFeedback('Übernommen ✓');
+    }
   } catch { showFeedback('Fehler beim Speichern'); }
-  finally { els.saveBtn.disabled = false; }
+  finally { updateSaveBtn(); }
 });
 
 function showFeedback(msg) {
