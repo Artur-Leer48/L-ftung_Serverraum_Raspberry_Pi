@@ -1,8 +1,10 @@
 from time import sleep
-import smbus2
+
 import bme280
+import smbus2
 from gpiozero import OutputDevice
 
+from calculations import calculate_dew_point, celsius_to_fahrenheit
 from config import (
     I2C_ADDRESS,
     I2C_PORT,
@@ -20,6 +22,8 @@ while True:
     temperatur = daten.temperature
     luftfeuchte = daten.humidity
     luftdruck = daten.pressure
+    temperatur_fahrenheit = celsius_to_fahrenheit(temperatur)
+    taupunkt = calculate_dew_point(temperatur, luftfeuchte)
 
     if temperatur >= TEMP_SCHWELLE:
         luefter.on()
@@ -28,6 +32,8 @@ while True:
 
     print("--------------------------------")
     print(f"Temperatur: {temperatur:.2f} °C")
+    print(f"Temperatur: {temperatur_fahrenheit:.2f} °F")
+    print(f"Taupunkt: {taupunkt:.2f} °C")
     print(f"Luftfeuchte: {int(luftfeuchte)} %")
     print(f"Luftdruck: {int(luftdruck)} hPa")
     print(f"Lüfter: {'AN' if luefter.value else 'AUS'}")
