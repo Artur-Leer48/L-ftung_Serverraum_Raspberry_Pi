@@ -5,3 +5,5 @@ services:
     container_name: lueftung-serverraum
     restart: unless-stopped
     privileged: true
+    volumes:
+      - ./messwerte.csv:/app/messwerte.csv
