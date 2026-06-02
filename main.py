@@ -3,10 +3,13 @@ import smbus2
 import bme280
 from gpiozero import OutputDevice
 
-I2C_PORT = 1
-I2C_ADDRESS = 0x77
-LUEFTER_PIN = 17
-TEMP_SCHWELLE = 25.0
+from config import (
+    I2C_ADDRESS,
+    I2C_PORT,
+    LUEFTER_PIN,
+    MESSINTERVALL_SEKUNDEN,
+    TEMP_SCHWELLE,
+)
 
 bus = smbus2.SMBus(I2C_PORT)
 kalibrierung = bme280.load_calibration_params(bus, I2C_ADDRESS)
@@ -29,4 +32,4 @@ while True:
     print(f"Luftdruck: {int(luftdruck)} hPa")
     print(f"Lüfter: {'AN' if luefter.value else 'AUS'}")
 
-    sleep(2)
+    sleep(MESSINTERVALL_SEKUNDEN)
