@@ -11,18 +11,9 @@
   <!-- ── Sidebar ─────────────────────────────────────────────── -->
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-        <rect width="36" height="36" rx="10" fill="#EEF2FF"/>
-        <path d="M18 8c-1.1 0-2 .9-2 2v2.2A8 8 0 0 0 10 20a8 8 0 0 0 16 0 8 8 0 0 0-6-7.8V10c0-1.1-.9-2-2-2Z" fill="#3E6AE1" opacity=".2"/>
-        <path d="M18 13a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm0 2a5 5 0 0 1 4.33 2.5H13.67A5 5 0 0 1 18 15Zm-5 5h10a5 5 0 0 1-10 0Z" fill="#3E6AE1"/>
-        <!-- fan blades -->
-        <g fill="#3E6AE1" opacity=".85">
-          <ellipse cx="18" cy="16" rx="2" ry="3.5" transform="rotate(0 18 18)"/>
-          <ellipse cx="18" cy="16" rx="2" ry="3.5" transform="rotate(120 18 18)"/>
-          <ellipse cx="18" cy="16" rx="2" ry="3.5" transform="rotate(240 18 18)"/>
-        </g>
-        <circle cx="18" cy="18" r="2" fill="#3E6AE1"/>
-      </svg>
+      <div class="sidebar-logo-icon">
+        <img src="/static/raspberry-pi.svg" width="28" height="28" alt="Raspberry Pi">
+      </div>
       <span class="sidebar-title">Serverraum</span>
     </div>
 
@@ -34,22 +25,6 @@
       <a href="#" class="nav-item" data-view="monitoring">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         Monitoring
-      </a>
-      <a href="#" class="nav-item">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-        Steuerung
-      </a>
-      <a href="#" class="nav-item">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        Alarme
-      </a>
-      <a href="#" class="nav-item">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Verlauf
-      </a>
-      <a href="#" class="nav-item">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
-        Einstellungen
       </a>
     </nav>
 
@@ -233,9 +208,9 @@
           Bei Überschreiten dieser Temperatur schalten sich die Lüfter ein.
         </p>
 
-        <button class="btn-save" id="saveBtn" type="button">
+        <button class="btn-save" id="saveBtn" type="button" disabled>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-          Speichern
+          Übernehmen
         </button>
 
         <div class="save-feedback" id="saveFeedback"></div>

@@ -53,6 +53,17 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
+.sidebar-logo-icon {
+  width: 36px;
+  height: 36px;
+  background: #EEF2FF;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .sidebar-title {
   font-size: 15px;
   font-weight: 500;
@@ -516,7 +527,8 @@ body {
   transition: background-color 0.33s;
 }
 
-.btn-save:hover { background: var(--accent-dk); }
+.btn-save:hover:not(:disabled) { background: var(--accent-dk); }
+.btn-save:disabled { background: #C4C9D4; cursor: not-allowed; }
 
 .save-feedback {
   font-size: 13px;
