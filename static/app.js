@@ -422,7 +422,7 @@ async function fetchStatus() {
 }
 
 fetchStatus();
-setInterval(fetchStatus, 1000);
+setInterval(fetchStatus, 1500);
 
 // ── Resize → redraw charts ────────────────────────────────────
 window.addEventListener('resize', () => {
