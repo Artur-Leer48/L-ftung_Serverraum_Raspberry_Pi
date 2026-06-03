@@ -21,7 +21,7 @@ def run_measurement_loop():
     luefter = None
 
     if LUEFTER_MODUS == "real":
-        luefter = OutputDevice(LUEFTER_PIN, active_high=True, initial_value=False)
+        luefter = OutputDevice(LUEFTER_PIN, active_high=False, initial_value=False)
 
     luefter_war_aktiv = False
 

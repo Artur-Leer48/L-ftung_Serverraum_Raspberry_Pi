@@ -3,7 +3,7 @@ from os import getenv
 
 I2C_PORT = 1
 I2C_ADDRESS = 0x77
-LUEFTER_PIN = 17
+LUEFTER_PIN = 23
 TEMP_SCHWELLE = 25.0
 MESSINTERVALL_SEKUNDEN = 1
 CSV_DATEI = "messwerte.csv"
